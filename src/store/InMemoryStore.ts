@@ -1,12 +1,10 @@
-import { Chat, Store, UserId } from "./store/Store";
+import { Chat, Store, UserId } from "./Store";
 
 var globleChatId =0;
 export interface Room{
-
     roomId : string;
     chats : Chat[];
-
-}
+} 
 
 export  class InMemoryStore implements Store {
     private store : Map<string,Room>;
@@ -37,13 +35,15 @@ export  class InMemoryStore implements Store {
         if(!room){
             return;
        }
-       room.chats.push({
+       const chat = {
          id : (globleChatId++).toString(),
            userId,
            name,
            message,
            upvotes : []
-       })
+       } 
+       room.chats.push(chat);
+       return chat;
     }
 
     upvote(userId : string,roomId : string, chatId : string){
@@ -57,6 +57,7 @@ export  class InMemoryStore implements Store {
        if(chat){
         chat.upvotes.push(chatId);
        }
+       return chat;
 
     }
 }
